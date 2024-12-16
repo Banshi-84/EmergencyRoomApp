@@ -1,17 +1,17 @@
 import OpenAI from 'openai';
 
 const openai = new OpenAI({
-  apiKey: import.meta.env.VITE_OPENAI_API_KEY, // 環境変数からAPIキーを取得
-  dangerouslyAllowBrowser: true, // ブラウザ環境で使う場合に必要
+  apiKey: import.meta.env.VITE_OPENAI_API_KEY, // Get API key from environment variables
+  dangerouslyAllowBrowser: true, // Required for use in a browser environment
 });
 
 export const getMedicalAdvice = async (prompt: string): Promise<string> => {
   try {
     const response = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo', // 使用するモデル
+      model: 'gpt-3.5-turbo', // Using this model
       messages: [{ role: 'user', content: prompt }],
-      temperature: 0.7, // 応答の多様性
-      max_tokens: 300, // 応答の最大長さ
+      temperature: 0.7, // Diversity of Responses
+      max_tokens: 300, // Maximum length of response
     });
 
     return response.choices[0]?.message?.content || "I'm sorry, I couldn't generate a response.";

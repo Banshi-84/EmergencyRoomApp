@@ -3,35 +3,35 @@ import { ChatMessage } from './ChatMessage';
 import { ChatHeader } from './ChatHeader';
 import { ChatInput } from './ChatInput';
 import { Message } from '../../types/chat';
-import { getMedicalAdvice } from '../../utils/assistantApi'; // API関数をインポート
+import { getMedicalAdvice } from '../../utils/assistantApi'; // Import API functions
 
 export const ChatInterface = () => {
   const [messages, setMessages] = useState<Message[]>([
     { role: 'assistant', content: "Hello! I'm your Medical Assistant. How can I help you today?" }
   ]);
   const [input, setInput] = useState('');
-  const [loading, setLoading] = useState(false); // ローディング状態
+  const [loading, setLoading] = useState(false); // loading state
 
   const handleSend = async () => {
     if (!input.trim()) return;
 
-    // ユーザーの入力を追加
+    // Add user input
     const userMessage = { role: 'user', content: input };
     setMessages(prev => [...prev, userMessage]);
-    setInput(''); // 入力欄をリセット
-    setLoading(true); // ローディング状態開始
+    setInput(''); // Reset input fields
+    setLoading(true); // Loading state start
 
     try {
-      // OpenAI APIを呼び出してアシスタントの返答を取得
+      // Call OpenAI API to get assistant's reply
       const assistantResponse = await getMedicalAdvice(input);
 
-      // アシスタントの返答を追加
+      // Add assistant's reply
       setMessages(prev => [...prev, { role: 'assistant', content: assistantResponse }]);
     } catch (error) {
       console.error('Error fetching advice:', error);
       setMessages(prev => [...prev, { role: 'assistant', content: "Sorry, I couldn't fetch a response. Please try again later." }]);
     } finally {
-      setLoading(false); // ローディング状態終了
+      setLoading(false); // Finish loading
     }
   };
 
